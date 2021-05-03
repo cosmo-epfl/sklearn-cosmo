@@ -70,9 +70,8 @@ non-linear techniques to combine features into latent-space projections
 use when condensing features prior to property regression or constructing
 structure-property maps, such as those analyzable via[@Fraux2020].
 
-Note: `scikit-COSMO` is not intended to compute atomic descriptors, as this is
-the role of the companion package `librascal` [@Musil2021] or similar, such as
-QUIP[@quip].
+`scikit-COSMO` itself does not compute atomic descriptors directly, and instead takes as input descriptors computed by other software such as `librascal` [@Musil2021],
+QUIP[@quip], and `DScribe`[https://github.com/SINGROUP/dscribe].
 
 scikit-COSMO also contains minimal datasets used to test the implementation, including a small
 subset of molecules and their NMR chemical shieldings, as reported in [@Ceriotti2019].
