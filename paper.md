@@ -63,7 +63,7 @@ and hyperparameter optimization.
                                @Cersonsky2021] - methods focused on determining
 a diverse or information-rich subset of features or samples for machine
 learning problems.
-- Partially-Supervised Dimensionality Reduction[@deJong1992
+- Hybrid Supervised-Unsupervised Dimensionality Reduction and Regression d[@deJong1992
                                                 @Helfrecht2020] - linear and
 non-linear techniques to combine features into latent-space projections
 (similar to PCA) that also incorporate target information. This is of particular
