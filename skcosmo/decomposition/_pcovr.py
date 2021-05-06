@@ -119,13 +119,19 @@ class PCovR(_BasePCA, LinearModel):
             default=`sample` when :math:`{n_{samples} < n_{features}}` and
             `feature` when :math:`{n_{features} < n_{samples}}`
 
-    regressor:
+    regressor: {`Ridge`, `RidgeCV`, `LinearRegression`}, default=None
              regressor for computing approximated :math:`{\mathbf{\hat{Y}}}`.
              The regressor must be one of `sklearn.linear_model.Ridge`,
              `sklearn.linear_model.RidgeCV`, or `sklearn.linear_model.LinearRegression`.
              If a pre-fitted regressor is provided,
              it is used to compute :math:`{\mathbf{\hat{Y}}}`.
-             The default regressor is `sklearn.linear_model.Ridge('alpha':1e-6, 'fit_intercept':False, 'tol':1e-12`)
+             If None, `sklearn.linear_model.Ridge('alpha':1e-6, 'fit_intercept':False, 'tol':1e-12)` is used as the regressor.
+             Note that any pre-fitting of the regressor will be lost if `PCovR` is
+             within a composite estimator that enforces cloning, e.g.,
+             `sklearn.compose.TransformedTargetRegressor` or
+             `sklearn.pipeline.Pipeline` with model caching.
+             In such cases, the regressor will be re-fitted on the same
+             training data as the composite estimator.
 
     iterated_power : int or 'auto', default='auto'
          Number of iterations for the power method computed by
@@ -141,9 +147,6 @@ class PCovR(_BasePCA, LinearModel):
 
     mixing: float, default=0.5
         mixing parameter, as described in PCovR as :math:`{\alpha}`
-
-    alpha: float, default=1E-6
-            Regularization parameter to use in all regression operations.
 
     tol: float, default=1e-12
         Tolerance for singular values computed by svd_solver == 'arpack'.
@@ -208,7 +211,7 @@ class PCovR(_BasePCA, LinearModel):
         svd_solver="auto",
         tol=1e-12,
         space="auto",
-        regressor=Ridge(alpha=1e-6, fit_intercept=False, tol=1e-12),
+        regressor=None,
         iterated_power="auto",
         random_state=None,
     ):
@@ -222,6 +225,9 @@ class PCovR(_BasePCA, LinearModel):
         self.tol = tol
         self.iterated_power = iterated_power
         self.random_state = random_state
+
+        if regressor is None:
+            regressor = Ridge(alpha=1e-6, fit_intercept=False, tol=1e-12)
 
         self.regressor = regressor
 
